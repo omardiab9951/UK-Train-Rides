@@ -1,0 +1,216 @@
+# UK Train Rides — Data Analysis & Forecasting
+
+A collaborative **DEPI graduation project** exploring UK train ticket transactions to understand purchase behavior, ticket pricing, route sales, and journey reliability. The project will extend this analysis into short-term demand forecasting and a Tableau dashboard.
+
+> **Current status:** Exploratory Data Analysis (EDA) is complete. Data preprocessing is in progress. Forecasting and Tableau implementation are planned; database and dashboard designs are currently proposals.
+
+## Project Overview
+
+The goal is to turn ticket records into clear, reproducible insights for railway operations, commercial planning, and financial analysis.
+
+The project addresses four main questions:
+
+- How do ticket prices, ticket classes, Railcards, and purchase channels differ?
+- Which directional routes contribute the most recorded ticket-sales value?
+- How do journey outcomes and refund-request rates vary?
+- What ticketed-journey demand and daily sales value can be forecast for the next month?
+
+This is an academic case study. No operational railway deployment or measured business impact is claimed.
+
+## Project Status
+
+| Workstream | Status | Deliverable |
+|---|---|---|
+| Exploratory Data Analysis | Completed | `EDA_final.ipynb` with summaries, charts, quality checks, and reconciled totals |
+| Data preprocessing | In progress | Cleaned dataset, preprocessing notebook, and transformation log |
+| Database implementation | Planned | Proposed schema to be implemented and validated |
+| Further business analysis | Planned | Decision-relevant questions answered using SQL and Python |
+| Forecasting | Planned | Next-month demand, daily sales-value forecasts, and demand by class |
+| Tableau dashboard | Planned | Interactive views of analysis and evaluated forecasts |
+| Final project delivery | Pending remaining implementation | Updated report, presentation, and full-project demonstration |
+
+## Dataset
+
+The main file, `railway.csv`, contains **31,653 ticket transaction records and 18 columns**. The optional `railway_data_dictionary.csv` describes the fields; it is a reference file, not a calculation input in the final EDA notebook.
+
+| Property | Observed value |
+|---|---|
+| Ticket transaction records | 31,653 |
+| Columns | 18 |
+| Purchase-date window | 8 December 2023–30 April 2024 |
+| Journey-date window | 1 January–30 April 2024 |
+| Unique transaction IDs | 31,653 |
+| Duplicate full rows | 0 |
+
+The fields cover purchase dates and times, purchase channels, payment methods, Railcards, ticket types and classes, prices, departure and arrival stations, journey dates and times, journey outcomes, disruption reasons, and refund requests.
+
+**Record meaning matters:** each row is a ticket transaction linked to a planned journey. It is not a verified boarding, a unique passenger, or a distinct train service.
+
+The CSV does not specify a currency. GBP is a project assumption; the analysis uses **price units** where source currency cannot be verified.
+
+## Completed EDA
+
+The final notebook contains **24 code cells and 10 saved chart outputs**, using pandas, NumPy, Matplotlib, and Seaborn. It separates calculations and tables from visualization cells and is organized by topic.
+
+The completed exploration includes:
+
+- Dataset profiling, duplicate checks, date validation, and descriptive price statistics.
+- Missing-value checks and preservation of meaningful Railcard categories.
+- Ticket-type, ticket-class, and Railcard comparisons.
+- Purchase-channel and payment-method analysis.
+- Directional route summaries and daily/monthly purchase and journey activity.
+- Journey reliability, disruption reasons, refund requests, data-quality flags, and total reconciliation.
+
+### Selected Findings
+
+These figures come from the final notebook’s saved outputs.
+
+| Finding | Result |
+|---|---|
+| Recorded ticket-sales value | **741,921 price units** |
+| Mean / median ticket price | **23.44 / 11 price units** |
+| Recorded price range | **1–267 price units** |
+| Leading route by sales value | **London Kings Cross to York: 183,193 price units** |
+| Journey-status shares | **86.82% On Time, 7.24% Delayed, 5.94% Cancelled** |
+| Refund-request rates within status | **23.82% Delayed; 30.43% Cancelled** |
+
+Overall, route, daily, and monthly purchase sales-value totals reconcile to **741,921 price units**.
+
+Ticket-sales value is the sum of recorded prices **before refund adjustments**. It is not profit or net revenue. A refund request does not confirm that a refund was approved or paid.
+
+### Data-Quality Decisions
+
+The literal Railcard value `None` means **no Railcard**, not missing information. Empty actual-arrival times for cancelled records and empty delay reasons for on-time records are retained as meaningful blanks.
+
+Under the documented overnight-time assumption, **18 records marked Delayed** have actual arrival at or before scheduled arrival. They remain review flags rather than being automatically relabeled. High prices are also retained; an unusual value is not automatically a data error.
+
+## Tools and Technologies
+
+| Tool | Use | Stage |
+|---|---|---|
+| Python, pandas, NumPy | Data inspection, aggregation, and preprocessing | EDA complete; preprocessing in progress |
+| Matplotlib, Seaborn | Statistical charts and visual exploration | Used in EDA |
+| Jupyter | Reproducible analysis notebooks | Used in EDA |
+| SQL | Analytical data model and business queries | Planned implementation |
+| PostgreSQL | Proposed database-design target | Draft design only |
+| scikit-learn | Candidate forecasting and evaluation workflows | Planned |
+| Tableau | Interactive analytical dashboard | Proposed design; implementation planned |
+
+## Expected Repository Structure
+
+The layout below is the intended organization for the project artifacts. It is **not a claim that every file is already uploaded**. Add the completed notebook and required data before attempting a local run.
+
+```text
+UK-Train-Rides/
+├── README.md
+├── Dataset/
+│   ├── railway.csv
+│   └── railway_data_dictionary.csv       # Optional reference
+├── System/
+│   └── EDA_Phase/
+│       └── EDA_final.ipynb
+├── Database/
+│   └── proposed_schema.sql               # Draft; not executed
+├── docs/
+│   └── DEPI_UK_Train_Rides_Documentation.docx
+└── Presentation/
+    ├── DEPI_UK_Train_Rides_Presentation.pdf
+    └── EDA_Saved_Output_Walkthrough.mp4
+```
+
+Preprocessing, forecasting, and Tableau artifacts should be added as those workstreams are completed. Keep historical EDA files separate from cleaned-data outputs.
+
+## Getting Started
+
+### 1. Obtain the project files
+
+Clone the repository:
+
+```bash
+git clone https://github.com/omardiab9951/UK-Train-Rides.git
+cd UK-Train-Rides
+```
+
+Ensure the following files exist locally:
+
+- `System/EDA_Phase/EDA_final.ipynb`
+- `Dataset/railway.csv`
+
+The source CSV is required to execute the notebook. Its availability and redistribution permissions must be confirmed; do not assume it is included merely because the repository is public.
+
+### 2. Create a Python environment
+
+Python 3.10 or newer is recommended. From the repository root:
+
+```bash
+python -m venv .venv
+```
+
+Activate it on macOS/Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Or in Windows PowerShell:
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+If your system uses `python3` rather than `python`, use that command when creating the environment.
+
+### 3. Install the EDA dependencies
+
+```bash
+python -m pip install numpy pandas matplotlib "seaborn>=0.12" jupyterlab
+```
+
+Seaborn 0.12 or newer is needed for the plotting API used in the notebook. These instructions are a dependency guide, not a frozen environment lockfile.
+
+### 4. Run the notebook
+
+Launch JupyterLab from the notebook directory:
+
+```bash
+cd System/EDA_Phase
+jupyter lab
+```
+
+Open `EDA_final.ipynb`, select the correct Python environment, restart the kernel, and run all cells in order.
+
+The notebook reads `../../Dataset/railway.csv`. Its working directory must therefore be `System/EDA_Phase`, including when it is opened through another notebook editor.
+
+## Preprocessing and Forecasting Roadmap
+
+The current preprocessing work will validate data types and chronology, document justified category standardization, preserve meaningful missing values, create useful derived fields, and export a cleaned dataset with before/after checks.
+
+The forecasting phase must define the demand target and cancellation policy before modelling. Required outputs are:
+
+1. The number of ticketed journeys for the month after the validated historical window.
+2. Recorded ticket-sales value for each day of that month.
+3. Demand by ticket class.
+
+May 2024 is a candidate first forecasting horizon because the observed journey window ends in April 2024; coverage must be validated before using that horizon. These are forecasts of the historical case-study data, not live predictions of current UK rail traffic.
+
+Models will be compared with simple baselines using chronological evaluation. Learned preprocessing must use training data only. No model accuracy, forecast values, or deployed dashboard are reported at this stage.
+
+## Documentation and Presentation
+
+Current-stage materials are available through the following public links:
+
+- [Project documentation — Word](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/AqLXpAxkRRityFaF.docx): planning, proposed stakeholders, database design, UI/UX design, and project status.
+- [Presentation — standalone PDF](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/hUzsBLVrlwEzTSWw.pdf).
+- [EDA walkthrough — MP4](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/dRRSolSnhqdkgpbR.mp4): a two-minute captioned video of saved notebook outputs, without audio or live execution.
+
+The database DDL and dashboard wireframe are **proposed designs**. The current video does not demonstrate forecasting, Tableau functionality, or deployment. Update these materials after implementation and recheck link access before final submission.
+
+## Limitations
+
+The extract-selection rule and complete purchase-date coverage are undocumented. Four months of journey history do not establish annual seasonality. Group price differences are descriptive and do not prove a causal Railcard discount effect.
+
+The available fields do not establish unique passenger counts, verified boardings, occupancy, distinct-service capacity, actual refund payments, or operating costs. Conclusions and forecasts must remain within these boundaries.
+
+## Attribution and Licensing
+
+This repository is maintained by the UK Train Rides DEPI project team. Add the verified dataset source and applicable dataset license before redistributing the CSV. A code license should be selected explicitly; no dataset permission or open-source license is assumed by this README.
