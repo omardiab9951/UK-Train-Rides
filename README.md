@@ -218,38 +218,6 @@ These are the metrics the project reports on. Current values come from the compl
 
 > **Required documents:** all the required project documents are in the **`Docs` branch** of this repository. Switch to that branch to find them.
 
-Current-stage materials are also available through the following public links:
-
-- [Project documentation — Word](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/AqLXpAxkRRityFaF.docx): planning, proposed stakeholders, database design, UI/UX design, and project status.
-- [Presentation — standalone PDF](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/hUzsBLVrlwEzTSWw.pdf).
-- [EDA walkthrough — MP4](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/dRRSolSnhqdkgpbR.mp4): a two-minute captioned video of saved notebook outputs, without audio or live execution.
-
-The database DDL and dashboard wireframe are **proposed designs**. The current video does not demonstrate forecasting, Tableau functionality, or deployment. Update these materials after implementation and recheck link access before final submission.
-
-### Expected Repository Structure
-
-The layout below is the intended organization for the project artifacts. It is **not a claim that every file is already uploaded**. Add the completed notebook and required data before attempting a local run.
-
-```text
-UK-Train-Rides/
-├── README.md
-├── Dataset/
-│   ├── railway.csv
-│   └── railway_data_dictionary.csv       # Optional reference
-├── System/
-│   └── EDA_Phase/
-│       └── EDA_final.ipynb
-├── Database/
-│   └── proposed_schema.sql               # Draft; not executed
-├── docs/
-│   └── DEPI_UK_Train_Rides_Documentation.docx
-└── Presentation/
-    ├── DEPI_UK_Train_Rides_Presentation.pdf
-    └── EDA_Saved_Output_Walkthrough.mp4
-```
-
-Preprocessing, forecasting, and Tableau artifacts should be added as those workstreams are completed. Keep historical EDA files separate from cleaned-data outputs.
-
 ### Getting Started
 
 #### 1. Obtain the project files
