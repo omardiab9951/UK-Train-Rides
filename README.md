@@ -216,7 +216,9 @@ These are the metrics the project reports on. Current values come from the compl
 
 ### Documentation and Presentation
 
-Current-stage materials are available through the following public links:
+> **Required documents:** all the required project documents are in the **`Docs` branch** of this repository. Switch to that branch to find them.
+
+Current-stage materials are also available through the following public links:
 
 - [Project documentation — Word](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/AqLXpAxkRRityFaF.docx): planning, proposed stakeholders, database design, UI/UX design, and project status.
 - [Presentation — standalone PDF](https://files.manuscdn.com/user_upload_by_module/session_file/310419663030272384/hUzsBLVrlwEzTSWw.pdf).
