@@ -212,15 +212,12 @@ These are the metrics the project reports on. Current values come from the compl
 
 ---
 
+
 ## Project Files
 
-### Documentation and Presentation
+All the required project files (documents, EDA notebook, dataset, and the files of every phase) are available in this Google Drive folder:
 
-> **Required files are in other branches:** the files for this project are organized across separate branches of this repository, not only the main branch. Switch to the right branch to find what you need:
->
-> - **`Docs` branch:** all the required project documents.
-> - **`EDA` branch:** the EDA notebook and its related files.
-> - Other branches hold the files of their own phases in the same way, so check the branch list when you look for a file.
+🔗 [UK Train Rides - Project Drive](https://drive.google.com/drive/folders/16Se_FEQ1GIvIaQPHEHbhDzrtH3sJj-8S?usp=sharing)
 
 ### Getting Started
 
