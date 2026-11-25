@@ -12,12 +12,23 @@ def clean_dataset(df):
     df["Purchase Datetime"] = df["Date of Purchase"] + " " + df["Time of Purchase"]
     df["Journey Datetime"] = df["Date of Journey"] + " " + df["Departure Time"]
 
+
+
     column_deleted = df.columns[df.columns.str.endswith("ID")]
     columns_to_drop = list(column_deleted) + ["Date of Purchase", "Time of Purchase", "Date of Journey", "Departure Time", "Ticket Class"]
 
     df.drop(columns=columns_to_drop, inplace=True)
 
-    df["Reason for Delay"] = df["Reason for Delay"].fillna("No Delay").replace({"Weather": "Weather Conditions", "Technical": "Technical Issues"})
+    delay_reason_map = {
+            "Signal Failure": "Signal Failure",
+            "Signal failure": "Signal Failure",
+            "Staff Shortage": "Staff Shortage",
+            "Staffing": "Staff Shortage",
+            "Weather": "Weather Conditions",
+            "Technical": "Technical Issues"
+        }
+
+    df["Reason for Delay"] = df["Reason for Delay"].fillna("No Delay").str.strip().str.title().replace(delay_reason_map)
     df["Railcard"] = df["Railcard"].fillna("No Railcard")
     return df
 

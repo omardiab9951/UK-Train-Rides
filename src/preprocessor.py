@@ -24,8 +24,8 @@ class RailwayFullPreprocessor(BaseEstimator, TransformerMixin):
 
         if "Journey Datetime" in df.columns:
             df["Journey Datetime"] = pd.to_datetime(df["Journey Datetime"], errors="coerce", format="mixed")
-            df["Is Weekend"] = df["Journey Datetime"].dt.dayofweek >= 5
-            df["Is Night Departure"] = df["Journey Datetime"].dt.hour.isin([0, 1, 2, 3, 4, 5])
+            df["Is Weekend"] = (df["Journey Datetime"].dt.dayofweek >= 5).astype(int)
+            df["Is Night Departure"] = df["Journey Datetime"].dt.hour.isin([0, 1, 2, 3, 4, 5]).astype(int)
 
         if "Purchase Datetime" in df.columns:
             df["Purchase Datetime"] = pd.to_datetime(df["Purchase Datetime"], errors="coerce", format="mixed")
@@ -38,8 +38,8 @@ class RailwayFullPreprocessor(BaseEstimator, TransformerMixin):
         if {"Arrival Time", "Actual Arrival Time"}.issubset(df.columns):
             sched_dt = pd.to_datetime(df["Arrival Time"], errors="coerce", format="mixed")
             actual_dt = pd.to_datetime(df["Actual Arrival Time"], errors="coerce", format="mixed")
+        
             delay_hours = (actual_dt - sched_dt).dt.total_seconds() / 3600.0
-
             crossed_midnight = delay_hours < self.midnight_rollover_threshold_hours
             delay_hours = delay_hours.where(~crossed_midnight, delay_hours + 24.0)
 
@@ -47,21 +47,33 @@ class RailwayFullPreprocessor(BaseEstimator, TransformerMixin):
             df["Delay Minutes"] = np.sqrt(np.clip(raw_delay_minutes, a_min=0.0, a_max=None))
 
         if {"Journey Datetime", "Arrival Time"}.issubset(df.columns) and raw_delay_minutes is not None:
-            arrival_str = df["Journey Datetime"].dt.date.astype(str) + " " + df["Arrival Time"].astype(str)
+            journey_dt_for_dur = pd.to_datetime(df["Journey Datetime"], errors="coerce", format="mixed")
+            sched_dt_for_dur = pd.to_datetime(df["Arrival Time"], errors="coerce", format="mixed")
+            arrival_str = journey_dt_for_dur.dt.date.astype(str) + " " + sched_dt_for_dur.dt.strftime("%H:%M:%S")
             arrival_datetime = pd.to_datetime(arrival_str, errors="coerce", format="mixed")
             df["Duration Minutes"] = (
-                (arrival_datetime + pd.to_timedelta(raw_delay_minutes, unit="m")) - df["Journey Datetime"]
+                (arrival_datetime + pd.to_timedelta(raw_delay_minutes, unit="m")) - journey_dt_for_dur
             ).dt.total_seconds() / 60.0
 
         if "Price" in df.columns:
             price = pd.to_numeric(df["Price"], errors="coerce")
             df["Price"] = np.log1p(np.clip(price, a_min=0.0, a_max=None))
 
+        raw_cols_to_drop = [
+            "Arrival Time",
+            "Actual Arrival Time",
+            "Purchase Datetime",
+            "Journey Datetime",
+        ]
+        existing_drop_cols = [c for c in raw_cols_to_drop if c in df.columns]
+        if existing_drop_cols:
+            df = df.drop(columns=existing_drop_cols)
+
         return df
 
 
 def build_preprocessor_pipeline():
-    label_features = ["Departure Station", "Arrival Destination"]
+    label_features = ["Departure Station", "Arrival Destination", "Refund Request"]
     ohe_features = [
         "Purchase Type",
         "Payment Method",
