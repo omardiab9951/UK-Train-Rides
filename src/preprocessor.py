@@ -1,4 +1,3 @@
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
@@ -97,19 +96,3 @@ def build_preprocessor_pipeline():
             ("preprocessor", column_transformer),
         ]
     )
-
-
-def preprocess_data(df):
-    pipeline = build_preprocessor_pipeline()
-    processed_array = pipeline.fit_transform(df)
-    return processed_array, pipeline
-
-
-if __name__ == "__main__":
-    raw_df = pd.read_csv("data/cleaned/cleaned_railway.csv")
-    processed_array, pipeline = preprocess_data(raw_df)
-    joblib.dump(pipeline, "models/preprocessor.joblib")
-
-    all_column_names = pipeline.named_steps["preprocessor"].get_feature_names_out()
-    processed_df = pd.DataFrame(processed_array, columns=all_column_names)
-    processed_df.to_csv("data/processed/processed_railway.csv", index=False)
